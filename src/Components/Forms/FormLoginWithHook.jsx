@@ -2,7 +2,7 @@ import useForm from "../Hooks/useForm.js";
 
 // eslint-disable-next-line react/prop-types
 const FormLoginWithHook = ({ titleForm }) => {
-    const { formData, handleChange } = useForm({
+    const { formData, handleChange, resetForm } = useForm({
         username: '',
         email: ''
     });
@@ -10,6 +10,11 @@ const FormLoginWithHook = ({ titleForm }) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log('datos del formulario', formData);
+    };
+
+    const handleReset = () => {
+        resetForm(); // Llamar al método para reiniciar el formulario
+        console.log('Formulario limpiado');
     };
 
     return (
@@ -40,7 +45,12 @@ const FormLoginWithHook = ({ titleForm }) => {
                         />
                     </label>
                 </div>
-                <button type="submit">Enviar</button>
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <button type="submit">Enviar</button>
+                    <button type="button" onClick={handleReset}>
+                        Limpiar
+                    </button>
+                </div>
             </form>
         </>
     );

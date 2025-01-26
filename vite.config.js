@@ -5,4 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/desarrollo-frontend-react-2025/',
+  resolve: {
+
+  },
 })

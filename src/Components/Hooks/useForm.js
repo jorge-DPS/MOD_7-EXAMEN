@@ -1,25 +1,35 @@
-import {useState} from "react";
+import { useState } from 'react';
 
-const useForm = (initialState = {}) => {
-    const [formData, setFormData] = useState(initialState);
+const useForm = (initialValues) => {
+  // Estado local del formulario
+  const [formData, setFormData] = useState(initialValues);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
+  // Método para manejar los cambios en los inputs
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-    const resetForm = () => {
-        setFormData(initialState);
-    };
+  // Método para reiniciar el formulario
+  const resetForm = () => {
+    setFormData({
+        MODULE: '',
+        USERNAME: '',
+        EMAIL: '',
+        PASSWORD: '',
+      }); // Restaura los valores iniciales
+    console.log('Formulario reiniciado:', { ...initialValues });
+  };
 
-    return {
-        formData,
-        handleChange,
-        resetForm,
-    };
+  // Retornar métodos y datos
+  return {
+    formData,
+    handleChange,
+    resetForm,
+  };
 };
 
 export default useForm;
