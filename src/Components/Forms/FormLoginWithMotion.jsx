@@ -1,113 +1,167 @@
-import React, { useState, useImperativeHandle, forwardRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { setFormData } from '../../store/form/formSlice';
-import useForm from '../Hooks/useForm';
-import ModalInfo from '../../Components/Modals/ModalInfo.jsx';
-import { motion } from 'framer-motion';
+import { useEffect, useState } from "react";
+import { motion } from "motion/react";
+import useForm from "../Hooks/useForm.js";
+import ModalInfo from "../../Components/Modals/ModalInfo.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "../../store/form/formSlice.js";
 
-const FormLoginWithMotion = forwardRef((_, ref) => {
-  const dispatch = useDispatch();
+const FormWithMotionAndHook = ({ titleForm }) => {
+    const store = useSelector((state) => state.formLogin);
+    const dispatch = useDispatch();
 
-  // Usar useForm para manejar los datos del formulario
-  const { formData, handleChange, resetForm } = useForm({
-    MODULE: 'React Mod7',
-    USERNAME: '',
-    EMAIL: '',
-    PASSWORD: 'mod7USIP-jorge',
-  });
+    const { formData, handleChange, setForm } = useForm({
+        module: '',
+        username: '',
+        email: '',
+        password: '',
+    });
 
-  const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
+    useEffect(() => {
+        setForm(store);
+    }, [store]);
 
-  // Exponer el método resetForm para que el componente padre pueda usarlo
-  useImperativeHandle(ref, () => ({
-    resetForm,
-  }));
+    const [showModal, setShowModal] = useState(false);
+    const [statusModel, setStatusModal] = useState('');
+    const [message, setMessage] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (formData.password === store.password) {
+            setStatusModal('success');
+            dispatch(addUser(formData));
+            setMessage(`Bienvenido: ${formData.username}`);
+        } else {
+            setStatusModal('error');
+            setMessage(`Username/Password incorrectos!!!`);
+        }
+        setShowModal(true);
+    };
 
-    if (formData.PASSWORD === 'mod7USIP-jorge') {
-      setModalMessage(`Bienvenido: ${formData.USERNAME}`);
-      dispatch(setFormData(formData));
-    } else {
-      setModalMessage('Contraseña inválida. No se guardaron los datos.');
-    }
+    const onCloseModalInfo = () => {
+        setShowModal(false);
+    };
 
-    setShowModal(true);
-  };
+    const handleStatusPassword = () => setShowPassword(!showPassword);
 
-  const onCloseModalInfo = () => {
-    setShowModal(false);
-  };
+    return (
+        <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+            <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="card shadow-lg rounded-4 p-4 w-100" style={{ maxWidth: "400px" }}
+            >
+                <ModalInfo
+                    visible={showModal}
+                    status={statusModel}
+                    message={message}
+                    onClose={onCloseModalInfo}
+                />
+                <motion.h3
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center text-primary mb-4"
+                >
+                    {titleForm}
+                </motion.h3>
 
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <ModalInfo
-        visible={showModal}
-        message={modalMessage}
-        onClose={onCloseModalInfo}
-      />
-      <form onSubmit={handleSubmit}>
-        {/* Campo MODULE */}
-        <div>
-          <label>
-            Módulo:
-            <input type="text" name="MODULE" value={formData.MODULE} disabled />
-          </label>
+                <form onSubmit={handleSubmit}>
+                    <motion.div
+                        initial={{ x: -50, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="mb-3"
+                    >
+                        <label className="form-label text-secondary">Module</label>
+                        <input
+                            className="form-control"
+                            disabled
+                            type="text"
+                            name="module"
+                            value={formData.module}
+                            onChange={handleChange}
+                            required
+                        />
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ x: -50, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="mb-3"
+                    >
+                        <label className="form-label text-secondary">Username</label>
+                        <input
+                            className="form-control"
+                            type="text"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            required
+                        />
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ x: -50, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="mb-3"
+                    >
+                        <label className="form-label text-secondary">Email</label>
+                        <input
+                            className="form-control"
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ x: -50, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="mb-3"
+                    >
+                        <label className="form-label text-secondary">Password</label>
+                        <div className="input-group">
+                            <input
+                                className="form-control"
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={handleStatusPassword}
+                                className="btn btn-outline-secondary"
+                            >
+                                {showPassword ? "Hide" : "Show"}
+                            </button>
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <button
+                            type="submit"
+                            className="btn btn-primary w-100"
+                        >
+                            Login
+                        </button>
+                    </motion.div>
+                </form>
+            </motion.div>
         </div>
+    );
+};
 
-        {/* Campo USERNAME */}
-        <div>
-          <label>
-            Username:
-            <input
-              type="text"
-              name="USERNAME"
-              value={formData.USERNAME}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-
-        {/* Campo EMAIL */}
-        <div>
-          <label>
-            Email:
-            <input
-              type="email"
-              name="EMAIL"
-              value={formData.EMAIL}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-
-        {/* Campo PASSWORD */}
-        <div>
-          <label>
-            Contraseña:
-            <input
-              type="password"
-              name="PASSWORD"
-              value={formData.PASSWORD}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
-
-        <button type="submit">Enviar</button>
-      </form>
-    </motion.div>
-  );
-});
-
-export default FormLoginWithMotion;
+export default FormWithMotionAndHook;

@@ -1,8 +1,8 @@
+import FilteralbleProductTable from "../Components/FilterableProductTable/FilterableProductTable";
+
 const Product = () => {
     return (
-        <>
-            <p>Component product</p>
-        </>
+        <FilteralbleProductTable/>
     );
 }
 

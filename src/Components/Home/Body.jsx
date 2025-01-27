@@ -1,7 +1,7 @@
 const Body = () => {
     return (
         <div>
-            <div className="card">
+            <div className="">
                 <h1>Vite + React</h1>
 
                 <h2>Diplomado en fullstack</h2>
