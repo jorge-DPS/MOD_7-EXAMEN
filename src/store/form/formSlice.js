@@ -5,7 +5,7 @@ const initialState = {
     module: 'React Mod7',
     username: '',
     email: '',
-    password: 'mod7USIP-SANTOS',
+    password: 'mod7USIP-jorge',
 }
 
 const formSlice = createSlice({

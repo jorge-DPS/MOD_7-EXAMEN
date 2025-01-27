@@ -12,7 +12,7 @@ const ModalInfo = ({ visible, message, onClose, status, confirmed }) => {
             backgroundColor: "rgba(0, 0, 0, 0.5)",
         }}>
             <motion.div
-                className={`modal-dialog modal-dialog-centered ${status === 'warning' ? 'border border-warning' : ''}`}
+                className={`modal-dialog modal-dialog-centered ${status === 'warning' ? '' : ''}`}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3 }}

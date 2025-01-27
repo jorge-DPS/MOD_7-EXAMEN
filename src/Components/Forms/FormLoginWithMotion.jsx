@@ -47,9 +47,9 @@ const FormWithMotionAndHook = ({ titleForm }) => {
     return (
         <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
             <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5 }}
+                // initial={{ scale: 0.9, opacity: 0 }}
+                // animate={{ scale: 1, opacity: 1 }}
+                // transition={{ duration: 0.5 }}
                 className="card shadow-lg rounded-4 p-4 w-100" style={{ maxWidth: "400px" }}
             >
                 <ModalInfo
